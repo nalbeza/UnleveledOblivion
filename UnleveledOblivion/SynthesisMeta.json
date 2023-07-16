@@ -1,0 +1,11 @@
+{
+  "Nickname": "",
+  "Visibility": "Visible",
+  "OneLineDescription": "Updates NPCs and creatures to have static levels rather than be tied to the player character",
+  "LongDescription": "",
+  "PreferredAutoVersioning": "Default",
+  "RequiredMods": [],
+  "TargetedReleases": [
+    "Oblivion"
+  ]
+}

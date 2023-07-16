@@ -1,0 +1,33 @@
+//Arena Opponents
+ArenaRank0A 6
+ArenaRank0B 6
+ArenaRank0C 7
+
+ArenaRank1A 8
+ArenaRank1B 6
+ArenaRank1C 6
+ArenaRank1D 9
+
+ArenaRank2A 10
+ArenaRank2B 11
+ArenaRank2C 12
+
+ArenaRank3A 12
+ArenaRank3B 13
+ArenaRank3C 14
+
+ArenaRank4A 15
+ArenaRank4B 15
+ArenaRank4C 18
+
+ArenaRank5A 11
+ArenaRank5B 11
+ArenaRank5C 11
+ArenaRank5D 18
+ArenaRank5E 20
+
+ArenaRank6A 25
+ArenaRank6B 30
+ArenaRank6C 12
+ArenaRank6D 35
+ArenaRank6E 7
