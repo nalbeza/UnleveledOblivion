@@ -18,6 +18,28 @@ namespace UnleveledOblivion
         [Tooltip("The base level of every creature. Zero is recommended but this can be increased to make the game more difficult.")]
         public short BaseLevel = 0;
 
+        [SettingName("Soul Settings")]
+        public SoulSettings SoulSettings = new();
+
+        [MaintainOrder]
+        [SettingName("Scaled Below Player Offset")]
+        [Tooltip("Adds an additional offset to creatures that are scaled below the player in vanilla Oblivion.")]
+        public short ScaledBelowPlayerOffset = -3;
+
+        [MaintainOrder]
+        [SettingName("Scaled Above Player Offset")]
+        [Tooltip("Adds an additional offset to creatures that are scaled above the player in vanilla Oblivion.")]
+        public short ScaledAbovePlayerOffset = 10;
+
+        [SettingName("Creature Min Level Settings")]
+        public CreatureMinSettings CreatureMinSettings = new();
+
+        [SettingName("Faction Settings")]
+        public CreatureFactionSettings FactionSettings = new();
+    }
+
+    public class SoulSettings
+    {
         [MaintainOrder]
         [SettingName("Petty Soul Offset")]
         [Tooltip("Determines how many levels to add or subtract to the base level for creatures with a petty soul.")]
@@ -42,7 +64,10 @@ namespace UnleveledOblivion
         [SettingName("Grand Soul Offset")]
         [Tooltip("Determines how many levels to add or subtract to the base level for creatures with a grand soul.")]
         public short GrandSoulOffset = 30;
+    }
 
+    public class CreatureMinSettings
+    {
         [MaintainOrder]
         [SettingName("Goblin Min Level")]
         [Tooltip("Determines the minimum level a goblin can be.")]
@@ -87,19 +112,6 @@ namespace UnleveledOblivion
         [SettingName("Ogre Min Level")]
         [Tooltip("Determines the minimum level a ogre can be.")]
         public short OgreMin = 10;
-
-        [MaintainOrder]
-        [SettingName("Scaled Below Player Offset")]
-        [Tooltip("Adds an additional offset to creatures that are scaled below the player in vanilla Oblivion.")]
-        public short ScaledBelowPlayerOffset = -3;
-
-        [MaintainOrder]
-        [SettingName("Scaled Above Player Offset")]
-        [Tooltip("Adds an additional offset to creatures that are scaled above the player in vanilla Oblivion.")]
-        public short ScaledAbovePlayerOffset = 10;
-
-        [SettingName("Faction Settings")]
-        public CreatureFactionSettings FactionSettings = new();
     }
 
     public class NPCSettings 
@@ -112,7 +124,7 @@ namespace UnleveledOblivion
         [MaintainOrder]
         [SettingName("Gender Adjustment")]
         [Tooltip("Applies an offset to the base level when NPC is flagged as female.")]
-        public short GenderOffset = -1;
+        public short GenderOffset = 0;
 
         [MaintainOrder]
         [SettingName("Vampire Base Level")]

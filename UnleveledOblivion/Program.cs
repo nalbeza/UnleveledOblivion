@@ -129,39 +129,39 @@ namespace UnleveledOblivion
             }
             if (creature.Name.ToLower().Contains("goblin") || creature.Name.ToLower().Contains("grummite"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.GoblinMin);
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.GoblinMin);
             }
             if (creature.Name.ToLower().Contains("dog") || creature.EditorID.ToLower().Contains("dog"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.DogMin);
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.DogMin);
             }
             if (creature.Name.ToLower().Contains("wolf") || creature.EditorID.ToLower().Contains("wolf"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.WolfMin);
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.WolfMin);
             }
             if (creature.Name.ToLower().Contains("horse") || creature.EditorID.ToLower().Contains("horse"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.HorseMin);
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.HorseMin);
             }
             if (creature.Name.ToLower().Contains("troll") || creature.EditorID.ToLower().Contains("troll"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.TrollMin);
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.TrollMin);
             }
             if (creature.Name.ToLower().Contains("zombie") || creature.EditorID.ToLower().Contains("zombie"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.ZombieMin);
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.ZombieMin);
             }
             if (creature.Name.ToLower().Contains("minotaur") || creature.EditorID.ToLower().Contains("minotaur"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.MinotaurMin);
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.MinotaurMin);
             }
             if (creature.Name.ToLower().Contains("ogre") || creature.EditorID.ToLower().Contains("ogre"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.OgreMin);
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.OgreMin);
             }
             if (creature.Name.ToLower().Contains("bear") || creature.EditorID.ToLower().Contains("bear"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.BearMin);
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.BearMin);
             }
             creature.Configuration.LevelOffset = Math.Max((short)1, Math.Min((short)50, creature.Configuration.LevelOffset));
         }
@@ -201,15 +201,15 @@ namespace UnleveledOblivion
                 case SoulLevel.None:
                     return 0;
                 case SoulLevel.Petty: 
-                    return Settings.CreatureSettings.PettySoulOffset;
+                    return Settings.CreatureSettings.SoulSettings.PettySoulOffset;
                 case SoulLevel.Lesser:
-                    return Settings.CreatureSettings.LesserSoulOffset;
+                    return Settings.CreatureSettings.SoulSettings.LesserSoulOffset;
                 case SoulLevel.Common:
-                    return Settings.CreatureSettings.CommonSoulOffset;
+                    return Settings.CreatureSettings.SoulSettings.CommonSoulOffset;
                 case SoulLevel.Greater: 
-                    return Settings.CreatureSettings.GreaterSoulOffset;
+                    return Settings.CreatureSettings.SoulSettings.GreaterSoulOffset;
                 case SoulLevel.Grand:
-                    return Settings.CreatureSettings.GrandSoulOffset;
+                    return Settings.CreatureSettings.SoulSettings.GrandSoulOffset;
                 default:
                     return 0;
             }
