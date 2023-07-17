@@ -92,20 +92,20 @@ namespace UnleveledOblivion
                 if (creature.Configuration.Flags.HasFlag(Creature.CreatureFlag.PCLevelOffset))
                 {
                     creature.Configuration.Flags -= Creature.CreatureFlag.PCLevelOffset;
-                    CalculateCreatureLevel(creature, isStatic: false, creatureLevelsFromFile);
+                    CalculateCreatureLevel(creature, state.LinkCache, isStatic: false, creatureLevelsFromFile);
                 }
                 else
                 {
-                    CalculateCreatureLevel(creature, isStatic: true, creatureLevelsFromFile);
+                    CalculateCreatureLevel(creature, state.LinkCache, isStatic: true, creatureLevelsFromFile);
                 }
 
                 CheckForHigherLevelVariant(creature, highestLevels, regex);
             }
         }
 
-        public static void CalculateCreatureLevel(Creature creature, bool isStatic, Dictionary<string, short> creatureLevelsFromFile)
+        public static void CalculateCreatureLevel(Creature creature, ILinkCache linkCache, bool isStatic, Dictionary<string, short> creatureLevelsFromFile)
         {
-            if (creature.Configuration is null || creature.EditorID is null) { return; }
+            if (creature.Configuration is null || creature.EditorID is null || creature.Name is null) { return; }
 
             // If the creature is in the file, use the level from the file
             if (creatureLevelsFromFile.TryGetValue(creature.EditorID, out short levelFromFile))
@@ -117,6 +117,7 @@ namespace UnleveledOblivion
             short startingLevel = creature.Configuration.LevelOffset;
             creature.Configuration.LevelOffset = Settings.CreatureSettings.BaseLevel;
             creature.Configuration.LevelOffset += AdjustLevelOffsetBySoulType(creature);
+            AdjustCreatureLevelByFaction(creature, linkCache);
             if (!isStatic)
             {
                 _ = startingLevel switch
@@ -125,6 +126,42 @@ namespace UnleveledOblivion
                     _ when startingLevel > 0 => creature.Configuration.LevelOffset += Settings.CreatureSettings.ScaledAbovePlayerOffset,
                     _ => creature.Configuration.LevelOffset += 0
                 };
+            }
+            if (creature.Name.ToLower().Contains("goblin") || creature.Name.ToLower().Contains("grummite"))
+            {
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.GoblinMin);
+            }
+            if (creature.Name.ToLower().Contains("dog") || creature.EditorID.ToLower().Contains("dog"))
+            {
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.DogMin);
+            }
+            if (creature.Name.ToLower().Contains("wolf") || creature.EditorID.ToLower().Contains("wolf"))
+            {
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.WolfMin);
+            }
+            if (creature.Name.ToLower().Contains("horse") || creature.EditorID.ToLower().Contains("horse"))
+            {
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.HorseMin);
+            }
+            if (creature.Name.ToLower().Contains("troll") || creature.EditorID.ToLower().Contains("troll"))
+            {
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.TrollMin);
+            }
+            if (creature.Name.ToLower().Contains("zombie") || creature.EditorID.ToLower().Contains("zombie"))
+            {
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.ZombieMin);
+            }
+            if (creature.Name.ToLower().Contains("minotaur") || creature.EditorID.ToLower().Contains("minotaur"))
+            {
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.MinotaurMin);
+            }
+            if (creature.Name.ToLower().Contains("ogre") || creature.EditorID.ToLower().Contains("ogre"))
+            {
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.OgreMin);
+            }
+            if (creature.Name.ToLower().Contains("bear") || creature.EditorID.ToLower().Contains("bear"))
+            {
+                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.BearMin);
             }
             creature.Configuration.LevelOffset = Math.Max((short)1, Math.Min((short)50, creature.Configuration.LevelOffset));
         }
@@ -178,6 +215,19 @@ namespace UnleveledOblivion
             }
         }
 
+        public static void AdjustCreatureLevelByFaction(Creature creature, ILinkCache linkCache)
+        {
+            foreach (var item in creature.Factions)
+            {
+                var faction = item.Faction.TryResolve(linkCache);
+                if (faction is null || faction?.EditorID is null || creature?.Configuration?.LevelOffset is null) { return; }
+                if (faction.EditorID == "LichFaction")
+                {
+                    creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.FactionSettings.LichMin);
+                }
+            }
+        }
+
         public static void UpdateNPCs(IPatcherState<IOblivionMod, IOblivionModGetter> state)
         {
             // Read the creature file and create a dictionary
@@ -218,7 +268,7 @@ namespace UnleveledOblivion
 
         public static void CalculateNPCLevel(Npc npc, ILinkCache linkCache, bool isStatic, Dictionary<string, short> npcLevelsFromFile)
         {
-            if (npc.Configuration is null || npc.EditorID is null) { return; }
+            if (npc.Configuration is null || npc.EditorID is null || npc?.Name is null) { return; }
 
             // If the creature is in the file, use the level from the file
             if (npcLevelsFromFile.TryGetValue(npc.EditorID, out short levelFromFile))
@@ -227,8 +277,19 @@ namespace UnleveledOblivion
                 return;
             }
 
-            short startingLevel = npc.Configuration.LevelOffset;
-            npc.Configuration.LevelOffset = Settings.NPCSettings.BaseLevel;
+            short startingLevel = npc.Configuration.LevelOffset;           
+            if (npc.Name.ToLower().Contains("vampire"))
+            {
+                npc.Configuration.LevelOffset = Settings.NPCSettings.VampireBaseLevel;
+            }
+            else
+            {
+                npc.Configuration.LevelOffset = Settings.NPCSettings.BaseLevel;
+            }
+            if (npc.Configuration.Flags.HasFlag(Npc.NpcFlag.Female))
+            {
+                npc.Configuration.LevelOffset += Settings.NPCSettings.GenderOffset;
+            }
             if (!isStatic)
             {
                 _ = startingLevel switch
@@ -252,17 +313,20 @@ namespace UnleveledOblivion
                     _ when startingLevel <= 2 => npc.Configuration.LevelOffset += Settings.NPCSettings.Tier1Offset,
                     _ when startingLevel <= 5 => npc.Configuration.LevelOffset += 0,
                     _ when startingLevel <= 10 => npc.Configuration.LevelOffset += Settings.NPCSettings.Tier2Offset,
-                    _ when startingLevel <= 20 => npc.Configuration.LevelOffset += Settings.NPCSettings.Tier3Offset,
+                    _ when startingLevel <= 17 => npc.Configuration.LevelOffset += Settings.NPCSettings.Tier3Offset,
+                    _ when startingLevel <= 20 => npc.Configuration.LevelOffset += Settings.NPCSettings.Tier4Offset,
                     _ when startingLevel <= 50 => npc.Configuration.LevelOffset += Settings.NPCSettings.Tier9Offset,
                     _ => npc.Configuration.LevelOffset += 0
                 };
             }
 
-            AdjustLevelByClass(npc, linkCache);
+            AdjustNPCLevelByClass(npc, linkCache);
+            AdjustNPCLevelByFaction(npc, linkCache);
+            AdjustNPCLevelByRace(npc, linkCache);           
             npc.Configuration.LevelOffset = Math.Max((short)1, Math.Min((short)50, npc.Configuration.LevelOffset));
         }
 
-        public static void AdjustLevelByClass(Npc npc, ILinkCache linkCache)
+        public static void AdjustNPCLevelByClass(Npc npc, ILinkCache linkCache)
         {
             IClassGetter? npcClass = npc.Class.TryResolve(linkCache);
             if (npcClass is null || npcClass?.EditorID is null || npc?.Configuration?.LevelOffset is null) { return; }
@@ -270,6 +334,120 @@ namespace UnleveledOblivion
             {
                 npc.Configuration.LevelOffset = Settings.NPCSettings.ClassSettings.GuardLevel;
             }
+            if (npcClass.EditorID == "Herald" || npcClass.EditorID == "Herder" 
+                || npcClass.EditorID == "Commoner" || npcClass.EditorID == "Farmer" 
+                || npcClass.EditorID == "Bard" || npcClass.EditorID == "Merchant")
+            {
+                npc.Configuration.LevelOffset += Settings.NPCSettings.ClassSettings.CommonerOffset;
+            }
+            if (npcClass.EditorID == "Warrior" || npcClass.EditorID.ToLower().Contains("knight")
+                || npcClass.EditorID == "Crusader" || npcClass.EditorID == "Assassin"
+                || npcClass.EditorID == "DBEnforcer" || npcClass.EditorID == "FGChampion"
+                || npcClass.EditorID == "Blademaster" || npcClass.EditorID == "Pirate"
+                || npcClass.EditorID == "Barbarian" || npcClass.EditorID == "Battlemage"
+                || npcClass.EditorID == "Warlock" || npcClass.EditorID == "Witch"
+                || npcClass.EditorID == "Sharpshooter" || npcClass.EditorID == "Hunter"
+                || npcClass.EditorID == "Necromancer" || npcClass.EditorID == "Conjurer"
+                || npcClass.EditorID == "Mage"
+                || npcClass.EditorID.ToLower().Contains("mythic dawn")
+                || npcClass.EditorID == "Sorcerer" || npcClass.EditorID == "Spellsword")
+            {
+                npc.Configuration.LevelOffset = Math.Max(Settings.NPCSettings.ClassSettings.WarriorMin, npc.Configuration.LevelOffset);
+            }
+            if (npcClass.EditorID == "Noble")
+            {
+                npc.Configuration.LevelOffset += Settings.NPCSettings.ClassSettings.NobleOffset;
+            }
+            if (npcClass.EditorID.ToLower().Contains("bandit") || npcClass.EditorID.ToLower().Contains("marauder") || npcClass.EditorID.ToLower().Contains("zealot"))
+            {
+                npc.Configuration.LevelOffset = Math.Max((short)Settings.NPCSettings.ClassSettings.BanditMin, Math.Min((short)Settings.NPCSettings.ClassSettings.BanditMax, npc.Configuration.LevelOffset));
+            }
+        }
+
+        public static void AdjustNPCLevelByRace(Npc npc, ILinkCache linkCache)
+        {
+            IRaceGetter? npcRace = npc.Race.TryResolve(linkCache);
+            if (npcRace is null || npcRace?.EditorID is null || npc?.Configuration?.LevelOffset is null) { return; }
+            switch (npcRace.EditorID) 
+            {
+                case "Imperial":
+                    npc.Configuration.LevelOffset += Settings.NPCSettings.RaceSettings.ImperialLevel;
+                    break;
+                case "Redguard":
+                    npc.Configuration.LevelOffset += Settings.NPCSettings.RaceSettings.RedguardLevel;
+                    break;
+                case "DarkSeducer":
+                    npc.Configuration.LevelOffset += Settings.NPCSettings.RaceSettings.DarkSeducerLevel;
+                    break;
+                case "GoldenSaint":
+                    npc.Configuration.LevelOffset += Settings.NPCSettings.RaceSettings.GoldenSaintLevel;
+                    break;
+                case "Orc":
+                    npc.Configuration.LevelOffset += Settings.NPCSettings.RaceSettings.OrcLevel;
+                    break;
+                case "DarkElf":
+                    npc.Configuration.LevelOffset += Settings.NPCSettings.RaceSettings.DarkElfLevel;
+                    break;
+                case "Khajiit":
+                    npc.Configuration.LevelOffset += Settings.NPCSettings.RaceSettings.KhajiitLevel;
+                    break;
+                case "WoodElf":
+                    npc.Configuration.LevelOffset += Settings.NPCSettings.RaceSettings.WoodElfLevel;
+                    break;
+                case "Breton":
+                    npc.Configuration.LevelOffset += Settings.NPCSettings.RaceSettings.BretonLevel;
+                    break;
+                case "Nord":
+                    npc.Configuration.LevelOffset += Settings.NPCSettings.RaceSettings.NordLevel;
+                    break;
+                case "Argonian":
+                    npc.Configuration.LevelOffset += Settings.NPCSettings.RaceSettings.ArgonianLevel;
+                    break;
+                case "Dremora":
+                    npc.Configuration.LevelOffset += Settings.NPCSettings.RaceSettings.DremoraLevel;
+                    break;
+            }
+        }
+
+        public static void AdjustNPCLevelByFaction(Npc npc, ILinkCache linkCache)
+        {
+            foreach (var item in npc.Factions)
+            {
+                var faction = item.Faction.TryResolve(linkCache);
+                if (faction is null || faction?.EditorID is null || npc?.Configuration?.LevelOffset is null) { return; }
+                if (faction.EditorID == "SEOrderFaction")
+                {
+                    npc.Configuration.LevelOffset = Math.Max(npc.Configuration.LevelOffset, Settings.NPCSettings.FactionSettings.ForcesOrderMin);
+                }
+                if (faction.EditorID == "MythicDawn")
+                {
+                    npc.Configuration.LevelOffset = Math.Max(npc.Configuration.LevelOffset, Settings.NPCSettings.FactionSettings.MythicDawnMin);
+                }
+                if (faction.EditorID == "FightersGuild")
+                {
+                    npc.Configuration.LevelOffset = Math.Max(npc.Configuration.LevelOffset, Settings.NPCSettings.FactionSettings.FightersGuildMin);
+                }
+                if (faction.EditorID == "MagesGuild")
+                {
+                    npc.Configuration.LevelOffset = Math.Max(npc.Configuration.LevelOffset, Settings.NPCSettings.FactionSettings.MagesGuildMin);
+                }
+                if (faction.EditorID == "DarkBrotherhood")
+                {
+                    npc.Configuration.LevelOffset = Math.Max(npc.Configuration.LevelOffset, Settings.NPCSettings.FactionSettings.DarkBrotherhoodMin);
+                }
+                if (faction.EditorID == "ThievesGuild")
+                {
+                    npc.Configuration.LevelOffset = Math.Max(npc.Configuration.LevelOffset, Settings.NPCSettings.FactionSettings.DarkBrotherhoodMin);
+                }
+                if (faction.EditorID == "VampireFaction")
+                {
+                    npc.Configuration.LevelOffset = Math.Max(npc.Configuration.LevelOffset, Settings.NPCSettings.FactionSettings.VampireMin);
+                }
+                if (faction.EditorID == "NDKnightsoftheNine" || faction.EditorID == "NDOriginalKnightsFaction")
+                {
+                    npc.Configuration.LevelOffset = Math.Max(npc.Configuration.LevelOffset, Settings.NPCSettings.FactionSettings.KnightsNineMin);
+                }
+            }            
         }
 
         public static void OutputNPCStats(IPatcherState<IOblivionMod, IOblivionModGetter> state, string extension = "")
