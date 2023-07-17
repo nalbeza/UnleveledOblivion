@@ -34,6 +34,7 @@ ArenaRank6E 7
 
 //High Level NPCs
 SESheogorath 100
+TheNightMother 75
 ND04SleepingTitan 50
 Mannimarco 48
 SEHaskill 45
