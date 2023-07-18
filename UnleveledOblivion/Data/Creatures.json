@@ -48,23 +48,23 @@
 		"Level": 35
 	},
 	{
-		"EditorID": "CreatureMinotaurLord",
-		"Level": 35
-	},
-	{
-		"EditorID": "ICArenaMinotaurLord",
-		"Level": 35
-	},
-	{
-		"EditorID": "CreatureMinotaurLordWeapon",
-		"Level": 35
-	},
-	{
 		"EditorID": "MS02LorgrentheLich",
 		"Level": 32
 	},
 	{
 		"EditorID": "SE02Gatekeeper8",
+		"Level": 32
+	},
+	{
+		"EditorID": "CreatureMinotaurLord",
+		"Level": 32
+	},
+	{
+		"EditorID": "ICArenaMinotaurLord",
+		"Level": 32
+	},
+	{
+		"EditorID": "CreatureMinotaurLordWeapon",
 		"Level": 32
 	},
 	{
