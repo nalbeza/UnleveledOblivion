@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace UnleveledOblivion
 {
-    public class Level
+    public class NPCLevel
     {
         public string EditorID { get; set; }
-        public short Value { get; set; }
+        public short Level { get; set; }
     }
 }

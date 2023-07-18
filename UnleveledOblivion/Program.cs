@@ -76,9 +76,9 @@ namespace UnleveledOblivion
             // Read the creature file and create a dictionary
             var path = Path.Combine(state.ExtraSettingsDataPath, "Creatures.json");
             string creatureLevelsJson = File.ReadAllText(path);
-            var creatureLevelsFromFile = JsonConvert.DeserializeObject<List<Level>>(creatureLevelsJson)
+            var creatureLevelsFromFile = JsonConvert.DeserializeObject<List<NPCLevel>>(creatureLevelsJson)
                         .Where(creatureLevel => creatureLevel != null && !string.IsNullOrWhiteSpace(creatureLevel?.EditorID))
-                        .ToDictionary(creatureLevel => creatureLevel.EditorID, level => level.Value);
+                        .ToDictionary(creatureLevel => creatureLevel.EditorID, level => level.Level);
 
             foreach (var creatureGetter in state.LoadOrder.PriorityOrder.Creature().WinningOverrides())
             {
@@ -231,9 +231,9 @@ namespace UnleveledOblivion
             if (state?.ExtraSettingsDataPath is null) { return; }
             var path = Path.Combine(state.ExtraSettingsDataPath, "NPCs.json");
             string npcLevelsJson = File.ReadAllText(path);
-            var npcLevelsFromFile = JsonConvert.DeserializeObject<List<Level>>(npcLevelsJson)
+            var npcLevelsFromFile = JsonConvert.DeserializeObject<List<NPCLevel>>(npcLevelsJson)
                         .Where(npcLevel => npcLevel != null && !string.IsNullOrWhiteSpace(npcLevel?.EditorID))
-                        .ToDictionary(npcLevel => npcLevel.EditorID, npc => npc.Value);
+                        .ToDictionary(npcLevel => npcLevel.EditorID, npc => npc.Level);
 
 
             foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
