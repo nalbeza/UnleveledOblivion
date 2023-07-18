@@ -245,7 +245,6 @@ namespace UnleveledOblivion
             {
                 // Add it to the patch
                 Npc npc = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter) ?? throw new Exception("Could not add npc as override.");
-
                 // Adjust
                 if (npc?.Configuration?.Flags is not null)
                 {
@@ -258,7 +257,7 @@ namespace UnleveledOblivion
                     {
                         CalculateNPCLevel(npc, state.LinkCache, isStatic: true, npcLevelsFromFile);
                     }
-                    npc.Configuration.Flags.SetFlag(Npc.NpcFlag.AutoCalcStats, true);
+                    npc.Configuration.Flags |= Npc.NpcFlag.AutoCalcStats;
                 }
             }
         }
