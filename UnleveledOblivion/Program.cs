@@ -195,6 +195,9 @@ namespace UnleveledOblivion
                         if (previousHighest.Configuration is not null && previousHighest.Data is not null)
                         {
                             previousHighest.Configuration.CalcMin = creature.Configuration.CalcMin;
+                            previousHighest.Configuration.Fatigue = creature.Configuration.Fatigue;
+                            previousHighest.Data.Health = creature.Data.Health;
+                            previousHighest.Data.AttackDamage = creature.Data.AttackDamage;
                             previousHighest.Data.SoulLevel = (SoulLevel)Math.Max((byte)creature.Data.SoulLevel, (byte)previousHighest.Data.SoulLevel);
                         }
                     }
@@ -204,6 +207,9 @@ namespace UnleveledOblivion
                 else
                 {
                     creature.Configuration.CalcMin = previousHighestList.Item1;
+                    creature.Configuration.Fatigue = previousHighestList.Item2.Max(x => x.Configuration.Fatigue);
+                    creature.Data.Health = previousHighestList.Item2.Max(x => x.Data.Health);
+                    creature.Data.AttackDamage = previousHighestList.Item2.Max(x => x.Data.AttackDamage);
                     creature.Data.SoulLevel = (SoulLevel)Math.Max((byte)creature.Data.SoulLevel, (byte)previousHighestList.Item2.Max(c => (byte)c.Data.SoulLevel));
                     previousHighestList.Item2.Add(creature); // Add the new creature to the list
                 }
