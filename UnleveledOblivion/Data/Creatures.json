@@ -1,0 +1,122 @@
+[
+	{
+		"EditorID": "SECreatureJyggalag8",
+		"Level": 100
+	},
+	{
+		"EditorID": "CreatureMehrunesDagon",
+		"Level": 100
+	},
+	{
+		"EditorID": "NDUmaril8",
+		"Level": 48
+	},
+	{
+		"EditorID": "ND10UmarilRealTEMPLATE",
+		"Level": 48
+	},
+	{
+		"EditorID": "ND10UmarilSpiritTEMPLATE",
+		"Level": 48
+	},
+	{
+		"EditorID": "MQ12LichKing",
+		"Level": 40
+	},
+	{
+		"EditorID": "SE09GatekeeperHelmMace",
+		"Level": 35
+	},
+	{
+		"EditorID": "SE09GatekeeperHelmAxe",
+		"Level": 35
+	},
+	{
+		"EditorID": "SE09GatekeeperHelmSword",
+		"Level": 35
+	},
+	{
+		"EditorID": "SE09GatekeeperHeadMace",
+		"Level": 35
+	},
+	{
+		"EditorID": "SE09GatekeeperHeadAxe",
+		"Level": 35
+	},
+	{
+		"EditorID": "SE09GatekeeperHeadSword",
+		"Level": 35
+	},
+	{
+		"EditorID": "MS02LorgrentheLich",
+		"Level": 32
+	},
+	{
+		"EditorID": "SE02Gatekeeper8",
+		"Level": 32
+	},
+	{
+		"EditorID": "SummonXivilai",
+		"Level": 26
+	},
+	{
+		"EditorID": "ND03Bear",
+		"Level": 26
+	},
+	{
+		"EditorID": "MS16CreatureRGVOgre04CBoss",
+		"Level": 25
+	},
+	{
+		"EditorID": "MS12CreaturePalePassOgre04CBoss",
+		"Level": 25
+	},
+	{
+		"EditorID": "ND08Wraith5",
+		"Level": 23
+	},
+	{
+		"EditorID": "MSWraithSpectralSailor",
+		"Level": 23
+	},
+	{
+		"EditorID": "MS06ShipSpiritCaptain",
+		"Level": 23
+	},
+	{
+		"EditorID": "TG03LlathasaWraith2Gloom",
+		"Level": 23
+	},
+	{
+		"EditorID": "CreatureWraith2GloomWeapon",
+		"Level": 23
+	},
+	{
+		"EditorID": "CreatureWraith2Gloom",
+		"Level": 23
+	},
+	{
+		"EditorID": "SECreatureAtronachFlesh5",
+		"Level": 20
+	},
+	{
+		"EditorID": "SE09SummonFleshAtronach",
+		"Level": 20
+	},
+	{
+		"EditorID": "SQ07CreatureStormAtronach04",
+		"Level": 20
+	},
+	{
+		"EditorID": "SESummonHunger5",
+		"Level": 20
+	},
+	{
+		"EditorID": "SQ09SlaughterfishBroodMother",
+		"Level": 15
+	},
+	{
+		"EditorID": "SQ09SlaughterfishAdult",
+		"Level": 12
+	}
+]

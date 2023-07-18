@@ -1,0 +1,564 @@
+[
+	{
+		"EditorID": "ArenaRank0A",
+		"Level": 6
+	},
+	{
+		"EditorID": "ArenaRank0B",
+		"Level": 6
+	},
+	{
+		"EditorID": "ArenaRank0C",
+		"Level": 7
+	},
+	{
+		"EditorID": "ArenaRank1A",
+		"Level": 8
+	},
+	{
+		"EditorID": "ArenaRank1B",
+		"Level": 6
+	},
+	{
+		"EditorID": "ArenaRank1C",
+		"Level": 6
+	},
+	{
+		"EditorID": "ArenaRank1D",
+		"Level": 9
+	},
+	{
+		"EditorID": "ArenaRank2A",
+		"Level": 10
+	},
+	{
+		"EditorID": "ArenaRank2B",
+		"Level": 11
+	},
+	{
+		"EditorID": "ArenaRank2C",
+		"Level": 12
+	},
+	{
+		"EditorID": "ArenaRank3A",
+		"Level": 12
+	},
+	{
+		"EditorID": "ArenaRank3B",
+		"Level": 13
+	},
+	{
+		"EditorID": "ArenaRank3C",
+		"Level": 14
+	},
+	{
+		"EditorID": "ArenaRank4A",
+		"Level": 15
+	},
+	{
+		"EditorID": "ArenaRank4B",
+		"Level": 15
+	},
+	{
+		"EditorID": "ArenaRank4C",
+		"Level": 18
+	},
+	{
+		"EditorID": "ArenaRank5A",
+		"Level": 11
+	},
+	{
+		"EditorID": "ArenaRank5B",
+		"Level": 11
+	},
+	{
+		"EditorID": "ArenaRank5C",
+		"Level": 11
+	},
+	{
+		"EditorID": "ArenaRank5D",
+		"Level": 18
+	},
+	{
+		"EditorID": "ArenaRank5E",
+		"Level": 20
+	},
+	{
+		"EditorID": "ArenaRank6A",
+		"Level": 25
+	},
+	{
+		"EditorID": "ArenaRank6B",
+		"Level": 30
+	},
+	{
+		"EditorID": "ArenaRank6C",
+		"Level": 12
+	},
+	{
+		"EditorID": "ArenaRank6D",
+		"Level": 32
+	},
+	{
+		"EditorID": "ArenaRank6E",
+		"Level": 7
+	},
+	{
+		"EditorID": "SESheogorath",
+		"Level": 100
+	},
+	{
+		"EditorID": "TheNightMother",
+		"Level": 75
+	},
+	{
+		"EditorID": "ND04SleepingTitan",
+		"Level": 50
+	},
+	{
+		"EditorID": "Mannimarco",
+		"Level": 48
+	},
+	{
+		"EditorID": "SEHaskill",
+		"Level": 45
+	},
+	{
+		"EditorID": "MankarCamoran",
+		"Level": 45
+	},
+	{
+		"EditorID": "AgronakGroMalog",
+		"Level": 41
+	},
+	{
+		"EditorID": "Umbra",
+		"Level": 40
+	},
+	{
+		"EditorID": "NightChild",
+		"Level": 40
+	},
+	{
+		"EditorID": "GrayFox",
+		"Level": 40
+	},
+	{
+		"EditorID": "GrayFoxCorvus",
+		"Level": 40
+	},
+	{
+		"EditorID": "GrayFoxStranger",
+		"Level": 40
+	},
+	{
+		"EditorID": "AlixLencolia",
+		"Level": 39
+	},
+	{
+		"EditorID": "AzaniBlackheart",
+		"Level": 38
+	},
+	{
+		"EditorID": "ModrynOreyn",
+		"Level": 34
+	},
+	{
+		"EditorID": "Alawen",
+		"Level": 33
+	},
+	{
+		"EditorID": "Borissean",
+		"Level": 33
+	},
+	{
+		"EditorID": "HannibalTraven",
+		"Level": 32
+	},
+	{
+		"EditorID": "BralsaAndaren",
+		"Level": 32
+	},
+	{
+		"EditorID": "Ungolim",
+		"Level": 31
+	},
+	{
+		"EditorID": "LucienLachance",
+		"Level": 31
+	},
+	{
+		"EditorID": "LucienLachanceHunted",
+		"Level": 31
+	},
+	{
+		"EditorID": "Dagail",
+		"Level": 31
+	},
+	{
+		"EditorID": "MelusPetilius",
+		"Level": 31
+	},
+	{
+		"EditorID": "GasparStegine",
+		"Level": 30
+	},
+	{
+		"EditorID": "OlynSeran",
+		"Level": 30
+	},
+	{
+		"EditorID": "ToothintheSea",
+		"Level": 30
+	},
+	{
+		"EditorID": "JGhasta",
+		"Level": 29
+	},
+	{
+		"EditorID": "HavilsteinHoarBlood",
+		"Level": 29
+	},
+	{
+		"EditorID": "AlvalUvani",
+		"Level": 29
+	},
+	{
+		"EditorID": "GogrongroBolmog",
+		"Level": 29
+	},
+	{
+		"EditorID": "VilenaDonton",
+		"Level": 29
+	},
+	{
+		"EditorID": "BanusAlor",
+		"Level": 28
+	},
+	{
+		"EditorID": "SERelmynaVerenim",
+		"Level": 28
+	},
+	{
+		"EditorID": "Renote",
+		"Level": 27
+	},
+	{
+		"EditorID": "MathieuBellamont",
+		"Level": 27
+	},
+	{
+		"EditorID": "Shaleez",
+		"Level": 27
+	},
+	{
+		"EditorID": "Falcar",
+		"Level": 26
+	},
+	{
+		"EditorID": "Celedaen",
+		"Level": 26
+	},
+	{
+		"EditorID": "HidesHisHeart",
+		"Level": 26
+	},
+	{
+		"EditorID": "DL9MoragTongAssassin",
+		"Level": 25
+	},
+	{
+		"EditorID": "BelisariusArius",
+		"Level": 25
+	},
+	{
+		"EditorID": "Baurus",
+		"Level": 25
+	},
+	{
+		"EditorID": "HelviusCecia",
+		"Level": 25
+	},
+	{
+		"EditorID": "Oleta",
+		"Level": 25
+	},
+	{
+		"EditorID": "SENelrene",
+		"Level": 25
+	},
+	{
+		"EditorID": "Glenroy",
+		"Level": 24
+	},
+	{
+		"EditorID": "OleedEi",
+		"Level": 24
+	},
+	{
+		"EditorID": "Arquen",
+		"Level": 23
+	},
+	{
+		"EditorID": "Pranal",
+		"Level": 22
+	},
+	{
+		"EditorID": "RaminusPolus",
+		"Level": 21
+	},
+	{
+		"EditorID": "Torbern",
+		"Level": 21
+	},
+	{
+		"EditorID": "Fafnir",
+		"Level": 20
+	},
+	{
+		"EditorID": "MartinaFloria",
+		"Level": 20
+	},
+	{
+		"EditorID": "GinWulm",
+		"Level": 20
+	},
+	{
+		"EditorID": "Sinderion",
+		"Level": 20
+	},
+	{
+		"EditorID": "Caranya",
+		"Level": 20
+	},
+	{
+		"EditorID": "IrlavJarolDead",
+		"Level": 20
+	},
+	{
+		"EditorID": "IrlavJarol",
+		"Level": 20
+	},
+	{
+		"EditorID": "GruiandGarrana",
+		"Level": 20
+	},
+	{
+		"EditorID": "Jbaana",
+		"Level": 20
+	},
+	{
+		"EditorID": "Tandilwe",
+		"Level": 20
+	},
+	{
+		"EditorID": "FathisUles",
+		"Level": 20
+	},
+	{
+		"EditorID": "Carahil",
+		"Level": 19
+	},
+	{
+		"EditorID": "BurzGroKhash",
+		"Level": 19
+	},
+	{
+		"EditorID": "NDIniusColus",
+		"Level": 19
+	},
+	{
+		"EditorID": "TarMeena",
+		"Level": 19
+	},
+	{
+		"EditorID": "RenaldViernis",
+		"Level": 19
+	},
+	{
+		"EditorID": "DLCBattlehornTrainer",
+		"Level": 19
+	},
+	{
+		"EditorID": "BittneldtheCurseBringer",
+		"Level": 18
+	},
+	{
+		"EditorID": "Rizakar",
+		"Level": 18
+	},
+	{
+		"EditorID": "Azzan",
+		"Level": 18
+	},
+	{
+		"EditorID": "Bothiel",
+		"Level": 18
+	},
+	{
+		"EditorID": "Teekeeus",
+		"Level": 17
+	},
+	{
+		"EditorID": "SEJayredIceVeins",
+		"Level": 17
+	},
+	{
+		"EditorID": "JulienneFanis",
+		"Level": 16
+	},
+	{
+		"EditorID": "Delmar",
+		"Level": 16
+	},
+	{
+		"EditorID": "Ocato",
+		"Level": 16
+	},
+	{
+		"EditorID": "Orintur",
+		"Level": 16
+	},
+	{
+		"EditorID": "Maiqtheliar",
+		"Level": 16
+	},
+	{
+		"EditorID": "UlrichLeland",
+		"Level": 15
+	},
+	{
+		"EditorID": "Deetsan",
+		"Level": 15
+	},
+	{
+		"EditorID": "BoderiFarano",
+		"Level": 15
+	},
+	{
+		"EditorID": "Ancotar",
+		"Level": 15
+	},
+	{
+		"EditorID": "Baeralorn",
+		"Level": 15
+	},
+	{
+		"EditorID": "Arkved",
+		"Level": 15
+	},
+	{
+		"EditorID": "AlbericLitte",
+		"Level": 14
+	},
+	{
+		"EditorID": "Abhuki",
+		"Level": 14
+	},
+	{
+		"EditorID": "PinarusInventius",
+		"Level": 14
+	},
+	{
+		"EditorID": "WormAnchorite",
+		"Level": 14
+	},
+	{
+		"EditorID": "AhMalz",
+		"Level": 13
+	},
+	{
+		"EditorID": "Varnado",
+		"Level": 13
+	},
+	{
+		"EditorID": "JaFazir",
+		"Level": 12
+	},
+	{
+		"EditorID": "Eilonwy",
+		"Level": 12
+	},
+	{
+		"EditorID": "KurzgroBaroth",
+		"Level": 12
+	},
+	{
+		"EditorID": "ForlornWatchmanPre",
+		"Level": 12
+	},
+	{
+		"EditorID": "AmminusGregori",
+		"Level": 11
+	},
+	{
+		"EditorID": "SE01GaiusPrentus",
+		"Level": 11
+	},
+	{
+		"EditorID": "Dark09CeremonyGuard2",
+		"Level": 11
+	},
+	{
+		"EditorID": "Dark09CeremonyGuard",
+		"Level": 11
+	},
+	{
+		"EditorID": "FGGuardPorterSkingrad",
+		"Level": 10
+	},
+	{
+		"EditorID": "FGGuardPorterLeyawiin",
+		"Level": 10
+	},
+	{
+		"EditorID": "FGGuardPorterCheydinhal",
+		"Level": 10
+	},
+	{
+		"EditorID": "FGGuardPorterBruma",
+		"Level": 10
+	},
+	{
+		"EditorID": "FGGuardPorterBravil",
+		"Level": 10
+	},
+	{
+		"EditorID": "FGGuardPorterAnvil",
+		"Level": 10
+	},
+	{
+		"EditorID": "FGGuardPorterChorrol",
+		"Level": 10
+	},
+	{
+		"EditorID": "JeanneFrasoricDead",
+		"Level": 10
+	},
+	{
+		"EditorID": "JeanneFrasoric",
+		"Level": 10
+	},
+	{
+		"EditorID": "SEYngvar",
+		"Level": 9
+	},
+	{
+		"EditorID": "OrmelliusGoldwine",
+		"Level": 8
+	},
+	{
+		"EditorID": "SEUnaArmina",
+		"Level": 7
+	},
+	{
+		"EditorID": "CastaFlavus",
+		"Level": 7
+	},
+	{
+		"EditorID": "WeedumJa",
+		"Level": 4
+	}
+]
+
+

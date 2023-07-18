@@ -1,8 +1,8 @@
 {
-  "Nickname": "",
+  "Nickname": "Unleveled Oblivion",
   "Visibility": "Visible",
-  "OneLineDescription": "Updates NPCs and creatures to have static levels rather than be tied to the player character",
-  "LongDescription": "",
+  "OneLineDescription": "Updates NPCs and creatures to have static levels rather than be tied to the player character.",
+  "LongDescription": "Updates NPCs and creatures to have static levels rather than be tied to the player character.",
   "PreferredAutoVersioning": "Default",
   "RequiredMods": [],
   "TargetedReleases": [

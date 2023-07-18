@@ -7,6 +7,7 @@ using System.Runtime;
 using System.Text.RegularExpressions;
 using Mutagen.Bethesda.Plugins.Cache;
 using Mutagen.Bethesda.Plugins;
+using Newtonsoft.Json;
 
 namespace UnleveledOblivion
 {
@@ -73,15 +74,11 @@ namespace UnleveledOblivion
             var regex = new Regex(@"\d+$");  // regex to match trailing numbers
 
             // Read the creature file and create a dictionary
-            var path = Path.Combine(AppContext.BaseDirectory, "Data", "Creatures.txt");
-            var creatureLevelsFromFile = new Dictionary<string, short>();
-            if (File.Exists(path))
-            {
-                creatureLevelsFromFile = File.ReadAllLines(path)
-                    .Where(line => !string.IsNullOrWhiteSpace(line) && !line.TrimStart().StartsWith("//"))
-                    .Select(line => line.Split(' '))
-                    .ToDictionary(parts => parts[0], parts => short.Parse(parts[1]));
-            }
+            var path = Path.Combine(state.ExtraSettingsDataPath, "Creatures.json");
+            string creatureLevelsJson = File.ReadAllText(path);
+            var creatureLevelsFromFile = JsonConvert.DeserializeObject<List<Level>>(creatureLevelsJson)
+                        .Where(creatureLevel => creatureLevel != null && !string.IsNullOrWhiteSpace(creatureLevel?.EditorID))
+                        .ToDictionary(creatureLevel => creatureLevel.EditorID, level => level.Value);
 
             foreach (var creatureGetter in state.LoadOrder.PriorityOrder.Creature().WinningOverrides())
             {
@@ -231,15 +228,13 @@ namespace UnleveledOblivion
         public static void UpdateNPCs(IPatcherState<IOblivionMod, IOblivionModGetter> state)
         {
             // Read the creature file and create a dictionary
-            var path = Path.Combine(AppContext.BaseDirectory, "Data", "NPCs.txt");
-            var npcLevelsFromFile = new Dictionary<string, short>();
-            if (File.Exists(path))
-            {
-                npcLevelsFromFile = File.ReadAllLines(path)
-                    .Where(line => !string.IsNullOrWhiteSpace(line) && !line.TrimStart().StartsWith("//"))
-                    .Select(line => line.Split(' '))
-                    .ToDictionary(parts => parts[0], parts => short.Parse(parts[1]));
-            }
+            if (state?.ExtraSettingsDataPath is null) { return; }
+            var path = Path.Combine(state.ExtraSettingsDataPath, "NPCs.json");
+            string npcLevelsJson = File.ReadAllText(path);
+            var npcLevelsFromFile = JsonConvert.DeserializeObject<List<Level>>(npcLevelsJson)
+                        .Where(npcLevel => npcLevel != null && !string.IsNullOrWhiteSpace(npcLevel?.EditorID))
+                        .ToDictionary(npcLevel => npcLevel.EditorID, npc => npc.Value);
+
 
             foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
             {
