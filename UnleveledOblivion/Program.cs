@@ -258,10 +258,7 @@ namespace UnleveledOblivion
                     {
                         CalculateNPCLevel(npc, state.LinkCache, isStatic: true, npcLevelsFromFile);
                     }
-                    if (!npc.Configuration.Flags.HasFlag(Npc.NpcFlag.AutoCalcStats))
-                    {
-                        npc.Configuration.Flags.SetFlag(Npc.NpcFlag.AutoCalcStats, true);
-                    }
+                    npc.Configuration.Flags.SetFlag(Npc.NpcFlag.AutoCalcStats, true);
                 }
             }
         }
