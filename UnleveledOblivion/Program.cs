@@ -70,7 +70,7 @@ namespace UnleveledOblivion
 
         public static void UpdateCreatures(IPatcherState<IOblivionMod, IOblivionModGetter> state)
         {
-            var highestLevels = new Dictionary<string, (short, Creature)>();
+            var highestLevels = new Dictionary<string, (ushort, List<Creature>)>();
             var regex = new Regex(@"\d+$");  // regex to match trailing numbers
 
             // Read the creature file and create a dictionary
@@ -88,14 +88,12 @@ namespace UnleveledOblivion
                 // Adjust
                 if (creature.Configuration.Flags.HasFlag(Creature.CreatureFlag.PCLevelOffset))
                 {
-                    creature.Configuration.Flags -= Creature.CreatureFlag.PCLevelOffset;
                     CalculateCreatureLevel(creature, state.LinkCache, isStatic: false, creatureLevelsFromFile);
                 }
                 else
                 {
                     CalculateCreatureLevel(creature, state.LinkCache, isStatic: true, creatureLevelsFromFile);
                 }
-
                 CheckForHigherLevelVariant(creature, highestLevels, regex);
             }
         }
@@ -107,88 +105,115 @@ namespace UnleveledOblivion
             // If the creature is in the file, use the level from the file
             if (creatureLevelsFromFile.TryGetValue(creature.EditorID, out short levelFromFile))
             {
-                creature.Configuration.LevelOffset = levelFromFile;
+                creature.Configuration.CalcMin = (ushort)levelFromFile;
+                creature.Configuration.CalcMax = (ushort)levelFromFile;               
+                var level = creature.Configuration.LevelOffset;
+                creature.Data.AttackDamage = (ushort)(creature.Data.AttackDamage <= 5 ? creature.Data.AttackDamage : levelFromFile + 10);
+                creature.Configuration.LevelOffset = 0;
+                if (!creature.Configuration.Flags.HasFlag(Creature.CreatureFlag.PCLevelOffset))
+                {
+                    creature.Data.Health = (uint)(creature.Data.Health / level);                    
+                    creature.Configuration.Fatigue = ((ushort)(creature.Configuration.Fatigue / level));
+                }               
                 return;
             }
 
             short startingLevel = creature.Configuration.LevelOffset;
-            creature.Configuration.LevelOffset = Settings.CreatureSettings.BaseLevel;
-            creature.Configuration.LevelOffset += AdjustLevelOffsetBySoulType(creature);
-            AdjustCreatureLevelByFaction(creature, linkCache);
+            creature.Configuration.LevelOffset = 0;
+            short finalLevel = Settings.CreatureSettings.BaseLevel;
+            finalLevel += AdjustLevelOffsetBySoulType(creature);
+            AdjustCreatureLevelByFaction(creature, ref finalLevel, linkCache);
             if (!isStatic)
             {
                 _ = startingLevel switch
                 {
-                    _ when startingLevel < 0 => creature.Configuration.LevelOffset -= Settings.CreatureSettings.ScaledBelowPlayerOffset,
-                    _ when startingLevel > 0 => creature.Configuration.LevelOffset += Settings.CreatureSettings.ScaledAbovePlayerOffset,
-                    _ => creature.Configuration.LevelOffset += 0
+                    _ when startingLevel < 0 => finalLevel -= Settings.CreatureSettings.ScaledBelowPlayerOffset,
+                    _ when startingLevel > 0 || creature.Configuration.CalcMin >= 15 => finalLevel += Settings.CreatureSettings.ScaledAbovePlayerOffset,
+                    _ => finalLevel += 0
                 };
             }
             if (creature.Name.ToLower().Contains("goblin") || creature.Name.ToLower().Contains("grummite"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.GoblinMin);
+                finalLevel = Math.Max(finalLevel, Settings.CreatureSettings.CreatureMinSettings.GoblinMin);
             }
             if (creature.Name.ToLower().Contains("dog") || creature.EditorID.ToLower().Contains("dog"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.DogMin);
+                finalLevel = Math.Max(finalLevel, Settings.CreatureSettings.CreatureMinSettings.DogMin);
             }
             if (creature.Name.ToLower().Contains("wolf") || creature.EditorID.ToLower().Contains("wolf"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.WolfMin);
+                finalLevel = Math.Max(finalLevel, Settings.CreatureSettings.CreatureMinSettings.WolfMin);
             }
             if (creature.Name.ToLower().Contains("horse") || creature.EditorID.ToLower().Contains("horse"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.HorseMin);
+                finalLevel = Math.Max(finalLevel, Settings.CreatureSettings.CreatureMinSettings.HorseMin);
             }
             if (creature.Name.ToLower().Contains("troll") || creature.EditorID.ToLower().Contains("troll"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.TrollMin);
+                finalLevel = Math.Max(finalLevel, Settings.CreatureSettings.CreatureMinSettings.TrollMin);
             }
             if (creature.Name.ToLower().Contains("zombie") || creature.EditorID.ToLower().Contains("zombie"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.ZombieMin);
+                finalLevel = Math.Max(finalLevel, Settings.CreatureSettings.CreatureMinSettings.ZombieMin);
             }
             if (creature.Name.ToLower().Contains("minotaur") || creature.EditorID.ToLower().Contains("minotaur"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.MinotaurMin);
+                finalLevel = Math.Max(finalLevel, Settings.CreatureSettings.CreatureMinSettings.MinotaurMin);
             }
             if (creature.Name.ToLower().Contains("ogre") || creature.EditorID.ToLower().Contains("ogre"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.OgreMin);
+                finalLevel = Math.Max(finalLevel, Settings.CreatureSettings.CreatureMinSettings.OgreMin);
             }
             if (creature.Name.ToLower().Contains("bear") || creature.EditorID.ToLower().Contains("bear"))
             {
-                creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.CreatureMinSettings.BearMin);
+                finalLevel = Math.Max(finalLevel, Settings.CreatureSettings.CreatureMinSettings.BearMin);
             }
-            creature.Configuration.LevelOffset = Math.Max((short)1, Math.Min((short)50, creature.Configuration.LevelOffset));
+            finalLevel = Math.Max((short)1, Math.Min((short)50, finalLevel));
+            if (isStatic)
+            {
+                creature.Configuration.Flags |= Creature.CreatureFlag.PCLevelOffset;
+                creature.Data.Health = (uint)(creature.Data.Health / startingLevel);               
+                creature.Configuration.Fatigue = ((ushort)(creature.Configuration.Fatigue / startingLevel));
+            }
+            creature.Data.AttackDamage = (ushort)(creature.Data.AttackDamage <= 5 ? creature.Data.AttackDamage : finalLevel + 10);
+            creature.Configuration.CalcMin = (ushort)finalLevel;
+            creature.Configuration.CalcMax = (ushort)finalLevel;
         }
 
-
-        public static void CheckForHigherLevelVariant(Creature creature, Dictionary<string, (short, Creature)> highestLevels, Regex regex)
+        public static void CheckForHigherLevelVariant(Creature creature, Dictionary<string, (ushort, List<Creature>)> highestLevels, Regex regex)
         {
-            if (creature.Configuration is null || creature.EditorID is null || creature.Data  is null) { return; }
+            if (creature.Configuration is null || creature.EditorID is null || creature.Data is null) { return; }
             var idWithoutNumber = regex.Replace(creature.EditorID, "");
             var compositeKey = idWithoutNumber + "_" + creature.Name;
 
-            if (highestLevels.TryGetValue(compositeKey, out (short, Creature) previousHighest))
+            if (highestLevels.TryGetValue(compositeKey, out (ushort, List<Creature>) previousHighestList))
             {
-                if (creature.Configuration.LevelOffset > previousHighest.Item1 && previousHighest.Item2.Configuration is not null && previousHighest.Item2.Data is not null)
+                if (creature.Configuration.CalcMin > previousHighestList.Item1)
                 {
-                    previousHighest.Item2.Configuration.LevelOffset = creature.Configuration.LevelOffset;
-                    previousHighest.Item2.Data.SoulLevel = (SoulLevel)Math.Max((byte)creature.Data.SoulLevel, (byte)previousHighest.Item2.Data.SoulLevel);
-                    highestLevels[compositeKey] = (creature.Configuration.LevelOffset, creature);
+                    foreach (var previousHighest in previousHighestList.Item2)
+                    {
+                        if (previousHighest.Configuration is not null && previousHighest.Data is not null)
+                        {
+                            previousHighest.Configuration.CalcMin = creature.Configuration.CalcMin;
+                            previousHighest.Data.SoulLevel = (SoulLevel)Math.Max((byte)creature.Data.SoulLevel, (byte)previousHighest.Data.SoulLevel);
+                        }
+                    }
+                    previousHighestList.Item2.Add(creature); // Add the new creature to the list
+                    highestLevels[compositeKey] = (creature.Configuration.CalcMin, previousHighestList.Item2); // Update the dictionary entry
                 }
-                else if (previousHighest.Item2.Data is not null)
+                else
                 {
-                    creature.Configuration.LevelOffset = previousHighest.Item1;
-                    creature.Data.SoulLevel = (SoulLevel)Math.Max((byte)creature.Data.SoulLevel, (byte)previousHighest.Item2.Data.SoulLevel);
+                    creature.Configuration.CalcMin = previousHighestList.Item1;
+                    creature.Data.SoulLevel = (SoulLevel)Math.Max((byte)creature.Data.SoulLevel, (byte)previousHighestList.Item2.Max(c => (byte)c.Data.SoulLevel));
+                    previousHighestList.Item2.Add(creature); // Add the new creature to the list
                 }
             }
             else
             {
-                highestLevels[compositeKey] = (creature.Configuration.LevelOffset, creature);
+                highestLevels[compositeKey] = (creature.Configuration.CalcMin, new List<Creature>() { creature }); // Create a new list with the creature
             }
         }
+
 
         public static short AdjustLevelOffsetBySoulType(Creature creature)
         {
@@ -212,15 +237,15 @@ namespace UnleveledOblivion
             }
         }
 
-        public static void AdjustCreatureLevelByFaction(Creature creature, ILinkCache linkCache)
+        public static void AdjustCreatureLevelByFaction(Creature creature, ref short finalLevel, ILinkCache linkCache)
         {
             foreach (var item in creature.Factions)
             {
                 var faction = item.Faction.TryResolve(linkCache);
-                if (faction is null || faction?.EditorID is null || creature?.Configuration?.LevelOffset is null) { return; }
+                if (faction is null || faction?.EditorID is null) { return; }
                 if (faction.EditorID == "LichFaction")
                 {
-                    creature.Configuration.LevelOffset = Math.Max(creature.Configuration.LevelOffset, Settings.CreatureSettings.FactionSettings.LichMin);
+                    finalLevel = Math.Max(finalLevel, Settings.CreatureSettings.FactionSettings.LichMin);
                 }
             }
         }
@@ -559,58 +584,58 @@ namespace UnleveledOblivion
                 {
                     if (!creature.EditorID.ToLower().Contains("test"))
                     {
-                        if (!(creature.Configuration.Flags.HasFlag(Creature.CreatureFlag.PCLevelOffset)))
+                        if (!(creature.Configuration.Flags.HasFlag(Creature.CreatureFlag.PCLevelOffset)) || extension == "_new")
                         {
-                            if (creature.Configuration.LevelOffset >= 40)
+                            if (creature.Configuration.CalcMin >= 40)
                             {
-                                level40s.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}");
+                                level40s.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.CalcMin}::{creature.Data.Health}:{creature.Data.AttackDamage}:{creature.Data.CombatSkill}:{creature.Data.MagicSkill}:{creature.Data.StealthSkill}:{creature.Configuration.Fatigue}");
                             }
-                            else if (creature.Configuration.LevelOffset >= 30)
+                            else if (creature.Configuration.CalcMin >= 30)
                             {
-                                level30s.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}");
+                                level30s.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.CalcMin}::{creature.Data.Health}:{creature.Data.AttackDamage}:{creature.Data.CombatSkill}:{creature.Data.MagicSkill}:{creature.Data.StealthSkill}:{creature.Configuration.Fatigue}");
                             }
-                            else if (creature.Configuration.LevelOffset >= 20)
+                            else if (creature.Configuration.CalcMin >= 20)
                             {
-                                level20s.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}");
+                                level20s.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.CalcMin}::{creature.Data.Health}:{creature.Data.AttackDamage}:{creature.Data.CombatSkill}:{creature.Data.MagicSkill}:{creature.Data.StealthSkill}:{creature.Configuration.Fatigue}");
                             }
-                            else if (creature.Configuration.LevelOffset >= 10)
+                            else if (creature.Configuration.CalcMin >= 10)
                             {
-                                level10s.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}");
+                                level10s.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.CalcMin}::{creature.Data.Health}:{creature.Data.AttackDamage}:{creature.Data.CombatSkill}:{creature.Data.MagicSkill}:{creature.Data.StealthSkill}:{creature.Configuration.Fatigue}");
                             }
                             else
                             {
-                                level00s.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}");
+                                level00s.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.CalcMin}::{creature.Data.Health}:{creature.Data.AttackDamage}:{creature.Data.CombatSkill}:{creature.Data.MagicSkill}:{creature.Data.StealthSkill}:{creature.Configuration.Fatigue}");
                             }
                         }
                         else
                         {
                             if (creature.Configuration.LevelOffset >= 10)
                             {
-                                offset10Plus.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}");
+                                offset10Plus.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}:{creature.Data.Health}:{creature.Data.AttackDamage}:{creature.Data.CombatSkill}:{creature.Data.MagicSkill}:{creature.Data.StealthSkill}:{creature.Configuration.Fatigue}");
                             }
                             else if (creature.Configuration.LevelOffset >= 7)
                             {
-                                offset7Through9.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}");
+                                offset7Through9.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}:{creature.Data.Health}:{creature.Data.AttackDamage}:{creature.Data.CombatSkill}:{creature.Data.MagicSkill}:{creature.Data.StealthSkill}:{creature.Configuration.Fatigue}");
                             }
                             else if (creature.Configuration.LevelOffset >= 5)
                             {
-                                offset5Through6.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}");
+                                offset5Through6.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}:{creature.Data.Health}:{creature.Data.AttackDamage}:{creature.Data.CombatSkill}:{creature.Data.MagicSkill}:{creature.Data.StealthSkill}:{creature.Configuration.Fatigue}");
                             }
                             else if (creature.Configuration.LevelOffset >= 3)
                             {
-                                offset3Through4.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}");
+                                offset3Through4.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}:{creature.Data.Health}:{creature.Data.AttackDamage}:{creature.Data.CombatSkill}:{creature.Data.MagicSkill}:{creature.Data.StealthSkill}:{creature.Configuration.Fatigue}");
                             }
                             else if (creature.Configuration.LevelOffset >= 1)
                             {
-                                offset1Through2.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}");
+                                offset1Through2.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}:{creature.Data.Health}:{creature.Data.AttackDamage}:{creature.Data.CombatSkill}:{creature.Data.MagicSkill}:{creature.Data.StealthSkill}:{creature.Configuration.Fatigue}");
                             }
                             else if (creature.Configuration.LevelOffset >= 0)
                             {
-                                offset0.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}");
+                                offset0.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}:{creature.Data.Health}:{creature.Data.AttackDamage}:{creature.Data.CombatSkill}:{creature.Data.MagicSkill}:{creature.Data.StealthSkill}:{creature.Configuration.Fatigue}");
                             }
                             else
                             {
-                                offsetNegative.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}");
+                                offsetNegative.Add($"{creature.Name}:{creature.EditorID}:{creature.Configuration.LevelOffset}:{creature.Data.Health}:{creature.Data.AttackDamage}:{creature.Data.CombatSkill}:{creature.Data.MagicSkill}:{creature.Data.StealthSkill}:{creature.Configuration.Fatigue}");
                             }
                         }
                     }
