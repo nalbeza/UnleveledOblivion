@@ -271,6 +271,7 @@ namespace UnleveledOblivion
             {
                 // Add it to the patch
                 Npc npc = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter) ?? throw new Exception("Could not add npc as override.");
+                if (npc.EditorID == "Player") { continue; }
                 // Adjust
                 if (npc?.Configuration?.Flags is not null)
                 {
