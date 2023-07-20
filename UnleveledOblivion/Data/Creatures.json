@@ -130,5 +130,13 @@
 	{
 		"EditorID": "SQ09SlaughterfishAdult",
 		"Level": 12
+	},
+	{
+		"EditorID": "SummonScamp",
+		"Level": 5
+	},
+	{
+		"EditorID": "SummonSpiderling",
+		"Level": 3
 	}
 ]
