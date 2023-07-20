@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -22,10 +23,43 @@ namespace UnleveledOblivion
                 var creatureList = state.PatchMod.LeveledCreatures.GetOrAddAsOverride(clGetter);
 
                 // Adjust
-                foreach (var entry in creatureList.Entries)
+                if (creatureList != null && creatureList.Entries.Any())
                 {
-                    entry.Level = 1;
-                }
+                    short? max = creatureList?.Entries.Max(x => x.Level);
+                    var newEntries = new List<LeveledCreatureEntry>();
+                    foreach (var entry in creatureList.Entries)
+                    {
+                        var initialLevel = entry.Level;
+                        entry.Level = 1;
+                        if (max > 1)
+                        {
+                            switch (initialLevel)
+                            {
+                                case short level when level == 1:
+                                    AddDeepCopiesOfLeveledListEntry(5, entry, ref newEntries);
+                                    break;
+                                case short level when level <= 5:
+                                    AddDeepCopiesOfLeveledListEntry(2, entry, ref newEntries);
+                                    break;
+                                case short level when level <= 9:
+                                    AddDeepCopiesOfLeveledListEntry(1, entry, ref newEntries);
+                                    break;
+                                default:
+                                    AddDeepCopiesOfLeveledListEntry(0, entry, ref newEntries);
+                                    break;
+                            }
+                        }
+                    }
+                    creatureList.Entries.AddRange(newEntries);
+                }                
+            }
+        }
+
+        public static void AddDeepCopiesOfLeveledListEntry(int copies, LeveledCreatureEntry entry, ref List<LeveledCreatureEntry> list)
+        {
+            for (int i = 0; i < copies; i++)
+            {
+                list.Add(entry.DeepCopy());  
             }
         }
 
