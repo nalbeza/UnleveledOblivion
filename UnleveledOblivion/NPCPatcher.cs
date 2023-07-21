@@ -56,12 +56,44 @@ namespace UnleveledOblivion
                 npc.Configuration.LevelOffset = levelFromFile;
                 return;
             }
+            else if (npc.Name.ToLower().Contains("dremora"))
+            {
+                var name = npc.Name.ToLower();
+                if (name.Contains("churl"))
+                {
+                    npc.Configuration.LevelOffset = 7;
+                }
+                else if (name.Contains("Caitiff"))
+                {
+                    npc.Configuration.LevelOffset = 9;
+                }
+                else if (name.Contains("Kynval"))
+                {
+                    npc.Configuration.LevelOffset = 11;
+                }
+                else if (name.Contains("Kynreeve"))
+                {
+                    npc.Configuration.LevelOffset = 13;
+                }
+                else if (name.Contains("Kynmarcher"))
+                {
+                    npc.Configuration.LevelOffset = 15;
+                }
+                else if (name.Contains("Markynaz"))
+                {
+                    npc.Configuration.LevelOffset = 19;
+                }
+                else if (name.Contains("Valkynaz"))
+                {
+                    npc.Configuration.LevelOffset = 22;
+                }
+            }
 
             short startingLevel = npc.Configuration.LevelOffset;
             if (npc.Name.ToLower().Contains("vampire"))
             {
                 npc.Configuration.LevelOffset = Program.Settings.NPCSettings.VampireBaseLevel;
-            }
+            }           
             else
             {
                 npc.Configuration.LevelOffset = Program.Settings.NPCSettings.BaseLevel;
