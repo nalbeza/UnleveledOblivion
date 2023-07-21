@@ -87,6 +87,11 @@ namespace UnleveledOblivion
                 {
                     npc.Configuration.LevelOffset = 22;
                 }
+                else
+                {
+                    npc.Configuration.LevelOffset = 12;
+                }
+                return;
             }
 
             short startingLevel = npc.Configuration.LevelOffset;
