@@ -63,27 +63,27 @@ namespace UnleveledOblivion
                 {
                     npc.Configuration.LevelOffset = 7;
                 }
-                else if (name.Contains("Caitiff"))
+                else if (name.Contains("caitiff"))
                 {
                     npc.Configuration.LevelOffset = 9;
                 }
-                else if (name.Contains("Kynval"))
+                else if (name.Contains("kynval"))
                 {
                     npc.Configuration.LevelOffset = 11;
                 }
-                else if (name.Contains("Kynreeve"))
+                else if (name.Contains("kynreeve"))
                 {
                     npc.Configuration.LevelOffset = 13;
                 }
-                else if (name.Contains("Kynmarcher"))
+                else if (name.Contains("kynmarcher"))
                 {
                     npc.Configuration.LevelOffset = 15;
                 }
-                else if (name.Contains("Markynaz"))
+                else if (name.Contains("markynaz"))
                 {
                     npc.Configuration.LevelOffset = 19;
                 }
-                else if (name.Contains("Valkynaz"))
+                else if (name.Contains("valkynaz"))
                 {
                     npc.Configuration.LevelOffset = 22;
                 }
