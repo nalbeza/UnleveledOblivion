@@ -36,13 +36,13 @@ namespace UnleveledOblivion
                             switch (initialLevel)
                             {
                                 case short level when level == 1:
-                                    AddDeepCopiesOfLeveledListEntry(5, entry, ref newEntries);
+                                    AddDeepCopiesOfLeveledListEntry(100, entry, ref newEntries);
                                     break;
                                 case short level when level <= 5:
-                                    AddDeepCopiesOfLeveledListEntry(2, entry, ref newEntries);
+                                    AddDeepCopiesOfLeveledListEntry(0, entry, ref newEntries);
                                     break;
                                 case short level when level <= 9:
-                                    AddDeepCopiesOfLeveledListEntry(1, entry, ref newEntries);
+                                    AddDeepCopiesOfLeveledListEntry(0, entry, ref newEntries);
                                     break;
                                 default:
                                     AddDeepCopiesOfLeveledListEntry(0, entry, ref newEntries);
