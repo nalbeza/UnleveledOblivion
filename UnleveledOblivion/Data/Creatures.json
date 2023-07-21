@@ -48,6 +48,10 @@
 		"Level": 35
 	},
 	{
+		"EditorID": "MQ15Kathutet",
+		"Level": 35
+	},
+	{
 		"EditorID": "MS02LorgrentheLich",
 		"Level": 32
 	},
@@ -68,20 +72,28 @@
 		"Level": 32
 	},
 	{
+		"EditorID": "MQ15XivilaiMedrike",
+		"Level": 31
+	},
+	{
+		"EditorID": "MQ15XivilaiAnaxes",
+		"Level": 31
+	},
+	{
 		"EditorID": "SummonXivilai",
 		"Level": 26
 	},
 	{
 		"EditorID": "ND03Bear",
-		"Level": 26
+		"Level": 24
 	},
 	{
 		"EditorID": "MS16CreatureRGVOgre04CBoss",
-		"Level": 25
+		"Level": 24
 	},
 	{
 		"EditorID": "MS12CreaturePalePassOgre04CBoss",
-		"Level": 25
+		"Level": 24
 	},
 	{
 		"EditorID": "ND08Wraith5",

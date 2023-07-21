@@ -63,7 +63,7 @@ namespace UnleveledOblivion
         [MaintainOrder]
         [SettingName("Grand Soul Offset")]
         [Tooltip("Determines how many levels to add or subtract to the base level for creatures with a grand soul.")]
-        public short GrandSoulOffset = 30;
+        public short GrandSoulOffset = 25;
     }
 
     public class CreatureMinSettings
