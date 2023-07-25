@@ -26,9 +26,9 @@ namespace UnleveledOblivion
 
         public static void RunPatch(IPatcherState<IOblivionMod, IOblivionModGetter> state)
         {
-            UpdateGameSettings(state);
-            CreaturePatcher.UpdateCreatureLeveledLists(state);
-            CreaturePatcher.UpdateCreatures(state);
+            UpdateGameSettings(state);           
+            var creatures = CreaturePatcher.UpdateCreatures(state);
+            CreatureLeveledListPatcher.UpdateCreatureLeveledLists(state, creatures);
             NPCPatcher.UpdateNPCs(state);
         }
 

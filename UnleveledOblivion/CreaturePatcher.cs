@@ -15,53 +15,9 @@ namespace UnleveledOblivion
 {
     public static class CreaturePatcher
     {
-        public static void UpdateCreatureLeveledLists(IPatcherState<IOblivionMod, IOblivionModGetter> state)
+        public static List<Creature> UpdateCreatures(IPatcherState<IOblivionMod, IOblivionModGetter> state)
         {
-            foreach (var clGetter in state.LoadOrder.PriorityOrder.LeveledCreature().WinningOverrides())
-            {
-                // Add it to the patch
-                var creatureList = state.PatchMod.LeveledCreatures.GetOrAddAsOverride(clGetter);
-
-                // Adjust
-                if (creatureList != null && creatureList.Entries.Any())
-                {
-                    short? max = creatureList?.Entries.Max(x => x.Level);
-                    var newEntries = new List<LeveledCreatureEntry>();
-                    foreach (var entry in creatureList.Entries)
-                    {
-                        var initialLevel = entry.Level;
-                        entry.Level = 1;
-                        if (max > 1)
-                        {
-                            switch (initialLevel)
-                            {
-                                case short level when initialLevel == 1:
-                                    AddDeepCopiesOfLeveledListEntry(9, entry, ref newEntries);
-                                    break;
-                                case short level when level <= 7:
-                                    AddDeepCopiesOfLeveledListEntry(1, entry, ref newEntries);
-                                    break;
-                                default:
-                                    AddDeepCopiesOfLeveledListEntry(0, entry, ref newEntries);
-                                    break;
-                            }
-                        }
-                    }
-                    creatureList.Entries.AddRange(newEntries);
-                }                
-            }
-        }
-
-        public static void AddDeepCopiesOfLeveledListEntry(int copies, LeveledCreatureEntry entry, ref List<LeveledCreatureEntry> list)
-        {
-            for (int i = 0; i < copies; i++)
-            {
-                list.Add(entry.DeepCopy());  
-            }
-        }
-
-        public static void UpdateCreatures(IPatcherState<IOblivionMod, IOblivionModGetter> state)
-        {
+            var returnList = new List<Creature>();
             var highestLevels = new Dictionary<string, (ushort, List<Creature>)>();
             var regex = new Regex(@"\d+$");  // regex to match trailing numbers
 
@@ -75,6 +31,7 @@ namespace UnleveledOblivion
             foreach (var creatureGetter in state.LoadOrder.PriorityOrder.Creature().WinningOverrides())
             {
                 Creature creature = state.PatchMod.Creatures.GetOrAddAsOverride(creatureGetter) ?? throw new Exception("Could not add creature as override.");
+                returnList.Add(creature);
                 if (creature.Configuration is null) { continue; }
 
                 // Adjust
@@ -88,6 +45,7 @@ namespace UnleveledOblivion
                 }
                 CheckForHigherLevelVariant(creature, highestLevels, regex);
             }
+            return returnList;
         }
 
         public static void CalculateCreatureLevel(Creature creature, ILinkCache linkCache, bool isStatic, Dictionary<string, short> creatureLevelsFromFile)
