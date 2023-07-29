@@ -76,7 +76,7 @@ namespace UnleveledOblivion
         [MaintainOrder]
         [SettingName("Bear Min Level")]
         [Tooltip("Determines the minimum level a bear can be.")]
-        public short BearMin = 10;
+        public short BearMin = 9;
 
         [MaintainOrder]
         [SettingName("Troll Min Level")]

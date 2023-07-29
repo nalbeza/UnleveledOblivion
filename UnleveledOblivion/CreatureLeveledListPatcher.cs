@@ -22,9 +22,10 @@ namespace UnleveledOblivion
                 var creatureReferenceList = state.PatchMod.LeveledCreatures.GetOrAddAsOverride(clGetter);
 
                 // Adjust
+                bool containsSpawnChanceFix = (state.LoadOrder.Keys.FirstOrDefault(x => x.FileName == "Creature Spawn Chance Fix.esp")) == null ? false : true;
                 if (creatureReferenceList != null && creatureReferenceList.Entries.Any())
                 {
-                    OverrideCertainLists(ref creatureReferenceList, creatureReferenceList.EditorID, creatures);
+                    OverrideCertainLists(ref creatureReferenceList, creatureReferenceList.EditorID, creatures, containsSpawnChanceFix);
 
                     short? max = creatureReferenceList?.Entries.Max(x => x.Level);
                     foreach (var entry in creatureReferenceList.Entries)
@@ -35,12 +36,16 @@ namespace UnleveledOblivion
             }
         }
 
-        public static void OverrideCertainLists(ref LeveledCreature? leveledCreature, string editorID, List<Creature> creatures)
+        public static void OverrideCertainLists(ref LeveledCreature? leveledCreature, string editorID, List<Creature> creatures, bool containsSpawnChanceFix = false)
         {
             foreach (var key in Overrides.Keys)
             {
                 if (editorID.Contains(key) && !editorID.ToLower().Contains("boss"))
                 {
+                    if (containsSpawnChanceFix && (editorID.Contains("75") || editorID.Contains("50") || editorID.Contains("25")))
+                    {
+                        continue;
+                    }
                     var creature = creatures.FirstOrDefault(c => c.EditorID == Overrides[key].Key);
                     if (creature != null)
                     {
