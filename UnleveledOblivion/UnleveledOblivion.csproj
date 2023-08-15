@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Using Include="System.Linq" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Mutagen.Bethesda.Oblivion" Version="0.41" />
     <PackageReference Include="Mutagen.Bethesda.Synthesis" Version="0.25.5-pr001" />
   </ItemGroup>
